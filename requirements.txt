@@ -1,13 +1,9 @@
 fastapi
-uvicorn
-celery
-redis
+uvicorn[standard]
 pypdf
 python-docx
-pytesseract
 Pillow
-google-genai
+pytesseract
 python-dotenv
-pydantic
-pydantic-settings
+google-genai
 aiofiles

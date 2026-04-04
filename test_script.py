@@ -25,9 +25,6 @@ processing.extract_text = mock_extract_text
 
 
 def test_api():
-    # Configure eager mode directly on the app just in case
-    processing.celery_app.conf.update(task_always_eager=True)
-    
     print("Testing health endpoint...")
     response = client.get("/health")
     assert response.status_code == 200

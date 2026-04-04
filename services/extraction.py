@@ -4,13 +4,25 @@ import pypdf
 import docx
 import pytesseract
 from PIL import Image
-from utils.errors import DocumentProcessingError, OCRFailureError
 
-# For local Windows development, you can set TESSERACT_CMD in your .env
-# On Render (Linux), pytesseract will find 'tesseract' in the system path automatically.
-tesseract_path = os.getenv("TESSERACT_CMD", "tesseract")
-if os.path.exists(tesseract_path):
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+# For local Windows development, set TESSERACT_CMD in your .env
+# On Render (Linux), pytesseract finds 'tesseract' in system PATH automatically.
+tesseract_cmd = os.getenv("TESSERACT_CMD", "")
+if tesseract_cmd and os.path.exists(tesseract_cmd):
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
+
+
+class DocumentProcessingError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
+class OCRFailureError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     try:
@@ -24,25 +36,24 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     except Exception as e:
         raise DocumentProcessingError(f"Failed to process PDF: {str(e)}")
 
+
 def extract_text_from_docx(file_bytes: bytes) -> str:
     try:
         doc = docx.Document(io.BytesIO(file_bytes))
-        text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        text = "\n".join([para.text for para in doc.paragraphs])
         return text.strip()
     except Exception as e:
         raise DocumentProcessingError(f"Failed to process DOCX: {str(e)}")
 
+
 def extract_text_from_image(file_bytes: bytes) -> str:
     try:
         image = Image.open(io.BytesIO(file_bytes))
-        # Optional: Can add image preprocessing here before OCR
         text = pytesseract.image_to_string(image)
-        if not text.strip():
-            # If tesseract succeeds but finds no text, just return empty, handling it at higher level
-            return ""
         return text.strip()
     except Exception as e:
         raise OCRFailureError(f"OCR failed for image: {str(e)}")
+
 
 def extract_text(file_bytes: bytes, file_type: str) -> str:
     if file_type == "pdf":
