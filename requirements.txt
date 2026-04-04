@@ -1,0 +1,12 @@
+fastapi==0.110.0
+uvicorn==0.29.0
+celery==5.3.6
+redis==5.0.3
+PyMuPDF==1.23.26
+python-docx==1.1.0
+pytesseract==0.3.10
+Pillow==10.2.0
+openai==1.14.3
+python-dotenv==1.0.1
+pydantic==2.6.4
+pydantic-settings==2.2.1

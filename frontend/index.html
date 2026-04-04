@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinetic Sentinel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon">⬡</span>
+            <h1>Kinetic Sentinel</h1>
+        </div>
+        <div class="user-avatar">
+            <input type="password" id="apiTokenInput" placeholder="Enter Sec-Token" style="background:#1a1a1c; border:1px solid #444; color:#fff; padding:6px 12px; border-radius:4px; font-size:12px;">
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <h2 class="section-title">ANALYSIS PIPELINE</h2>
+        <h1 class="document-title" id="displayFileName">Awaiting_Document.pdf</h1>
+
+        <div class="split-view">
+            <!-- Left Column: Document Viewer Placeholder -->
+            <div class="document-viewer">
+                <div class="viewer-content">
+                    <img src="assets/document_icon.png" alt="Document Graphic" class="doc-graphic" id="docImageFallback">
+                </div>
+                <div class="viewer-controls">
+                    <input type="file" id="fileUpload" accept=".pdf,.png,.jpg,.jpeg,.docx" style="display:none;" />
+                    <button class="upload-btn" onclick="document.getElementById('fileUpload').click()">
+                        Upload Local Document
+                    </button>
+                    <p id="uploadStatus">Waiting for upload...</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Extracted Insights -->
+            <div class="insights-panel">
+                <div class="glass-card summary-card">
+                    <div class="card-header">
+                        <span class="icon-stars">✨</span>
+                        <h3>Intelligence Summary</h3>
+                    </div>
+                    
+                    <div class="summary-content" id="summaryText">
+                        Upload a document to generate an intelligence scan via the Gemini AI pipeline.
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="confidence">
+                            <span class="conf-label">CONFIDENCE SCORE</span>
+                            <span class="conf-value" id="confidenceValue">--%</span>
+                        </div>
+                        <button class="regenerate-btn" onclick="analyzeDocument()">ANALYZE</button>
+                    </div>
+                </div>
+
+                <div class="entities-section">
+                    <h4>EXTRACTED ENTITIES</h4>
+                    
+                    <div class="entity-group">
+                        <div class="group-header">
+                            <span class="icon">🏢</span> ORGANIZATIONS
+                        </div>
+                        <div class="pill-container" id="orgsContainer">
+                            <span class="pill empty">None</span>
+                        </div>
+                    </div>
+
+                    <div class="entity-group finance">
+                        <div class="group-header">
+                            <span class="icon">💵</span> FINANCIAL MARKERS
+                        </div>
+                        <div class="pill-container" id="amountsContainer">
+                            <span class="pill empty">None</span>
+                        </div>
+                    </div>
+
+                    <div class="entity-group personas">
+                        <div class="group-header">
+                            <span class="icon">👤</span> KEY PERSONAS
+                        </div>
+                        <div class="pill-container" id="namesContainer">
+                            <span class="pill empty">None</span>
+                        </div>
+                    </div>
+
+                    <div class="entity-group dates">
+                        <div class="group-header">
+                            <span class="icon">📅</span> CRITICAL DATES
+                        </div>
+                        <div class="pill-container" id="datesContainer">
+                            <span class="pill empty">None</span>
+                        </div>
+                    </div>
+                    
+                    <div class="entity-group sentiment-box">
+                        <div class="group-header">
+                            <span class="icon">📊</span> SENTIMENT POSTURE
+                        </div>
+                        <div class="pill-container" id="sentimentContainer">
+                            <span class="pill sentiment-pill">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

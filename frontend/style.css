@@ -1,0 +1,324 @@
+:root {
+    --bg-dark: #121214;
+    --bg-panel: #1e1e20;
+    --bg-card: #252528;
+    --accent-orange: #ff5722;
+    --accent-orange-hover: #e64a19;
+    --text-main: #f5f5f5;
+    --text-muted: #9e9e9e;
+    --border-color: #333336;
+    
+    --pill-bg-org: #2c2c30;
+    --pill-bg-finance: #3a221f;
+    --pill-text-finance: #ffcccb;
+    --pill-border-finance: #5c3530;
+    
+    --pill-bg-persona: #33151a;
+    --pill-text-persona: #ffa8b5;
+    --pill-border-persona: #541c25;
+    
+    --pill-bg-date: #192734;
+    --pill-text-date: #b6d8ff;
+    --pill-border-date: #24415c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #0b0b0c;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: var(--accent-orange);
+    font-size: 24px;
+}
+
+.logo h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.document-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #fff;
+    word-break: break-all;
+}
+
+.split-view {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.document-viewer {
+    flex: 1;
+    background-color: var(--bg-panel);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--border-color);
+}
+
+.viewer-content {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background-color: #2a2a2d;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.doc-graphic {
+    max-width: 70%;
+    opacity: 0.8;
+}
+
+.viewer-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-btn {
+    background-color: #333;
+    color: white;
+    border: 1px solid #444;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.upload-btn:hover {
+    background-color: #444;
+}
+
+#uploadStatus {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.insights-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.glass-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: 0.2s;
+}
+
+.glass-card:hover {
+    transform: scale(1.02);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.icon-stars {
+    color: var(--accent-orange);
+}
+
+.card-header h3 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.summary-content {
+    color: #d1d1d1;
+    font-size: 14px;
+    margin-bottom: 30px;
+    min-height: 80px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.confidence {
+    display: flex;
+    flex-direction: column;
+}
+
+.conf-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.conf-value {
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.regenerate-btn {
+    background-color: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.regenerate-btn:hover {
+    background-color: var(--accent-orange-hover);
+}
+
+.entities-section h4 {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.entity-group {
+    background-color: #1a1a1c;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.group-header {
+    font-size: 10px;
+    color: #6da2bf;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.finance .group-header { color: #d6874e; }
+.personas .group-header { color: #cc4555; }
+.dates .group-header { color: #5381ad; }
+.sentiment-box .group-header { color: #a180d6; }
+
+.pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: var(--pill-bg-org);
+    color: #ddd;
+    border: 1px solid #444;
+}
+
+.pill.empty {
+    opacity: 0.5;
+    background: transparent;
+    border-style: dashed;
+}
+
+.finance .pill {
+    background-color: var(--pill-bg-finance);
+    color: var(--pill-text-finance);
+    border-color: var(--pill-border-finance);
+}
+
+.personas .pill {
+    background-color: var(--pill-bg-persona);
+    color: var(--pill-text-persona);
+    border-color: var(--pill-border-persona);
+}
+
+.dates .pill {
+    background-color: var(--pill-bg-date);
+    color: var(--pill-text-date);
+    border-color: var(--pill-border-date);
+}
+
+.sentiment-pill {
+    background-color: #2c1a40;
+    color: #d1b3ff;
+    border-color: #4a3066;
+}
+
+/* Response handling */
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@media (max-width: 900px) {
+    .split-view {
+        flex-direction: column;
+    }
+}
