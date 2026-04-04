@@ -1,3 +1,4 @@
+import os
 import io
 import pypdf
 import docx
@@ -5,7 +6,11 @@ import pytesseract
 from PIL import Image
 from utils.errors import DocumentProcessingError, OCRFailureError
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+# For local Windows development, you can set TESSERACT_CMD in your .env
+# On Render (Linux), pytesseract will find 'tesseract' in the system path automatically.
+tesseract_path = os.getenv("TESSERACT_CMD", "tesseract")
+if os.path.exists(tesseract_path):
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     try:

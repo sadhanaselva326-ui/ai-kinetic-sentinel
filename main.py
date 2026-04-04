@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from routes import document
 from utils.errors import DocumentProcessingError, InvalidBase64Error, OCRFailureError
 
@@ -47,3 +48,7 @@ app.include_router(document.router, prefix="/api")
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+# Serve the frontend as static files
+# If deploying to Render, the UI will be served at the root URL (/)
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

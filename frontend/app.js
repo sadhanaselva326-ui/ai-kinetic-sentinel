@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/api/document-analyze";
+const API_URL = "/api/document-analyze";
 
 // Pre-fill the token on page load
 window.addEventListener('DOMContentLoaded', () => {

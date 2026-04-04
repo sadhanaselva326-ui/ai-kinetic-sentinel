@@ -44,7 +44,7 @@ def test_api():
     }
 
     headers = {
-        "x-api-key": "test_secret"
+        "x-api-key": "super_secure_key_123"
     }
 
     print("Sending request to /api/document-analyze...")

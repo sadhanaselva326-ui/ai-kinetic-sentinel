@@ -10,6 +10,9 @@ celery_app = Celery(
     backend=os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
 )
 
+# Enable eager mode — tasks run immediately without Redis (for demo/hackathon/Render free plan)
+celery_app.conf.update(task_always_eager=True)
+
 @celery_app.task(bind=True, name="process_document_task")
 def process_document_task(self, file_base64: str, file_type: str):
     """
