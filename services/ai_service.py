@@ -40,9 +40,10 @@ def analyze_document_text(text: str) -> dict:
 
         client = genai.Client(api_key=api_key)
 
-        def _call_gemini():
+        # Define the AI call logic
+        def _call_gemini(model_name):
             return client.models.generate_content(
-                model='gemini-2.0-flash',
+                model=model_name,
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
@@ -50,25 +51,33 @@ def analyze_document_text(text: str) -> dict:
                 )
             )
 
-        try:
-            response = _call_gemini()
-        except Exception as rate_err:
-            if "429" in str(rate_err) or "RESOURCE_EXHAUSTED" in str(rate_err):
-                import time
-                time.sleep(20)
-                response = _call_gemini()
-            elif "503" in str(rate_err) or "UNAVAILABLE" in str(rate_err):
-                # Fallback to gemini-1.5-flash which handles high load better
-                response = client.models.generate_content(
-                    model='gemini-1.5-flash',
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.0
-                    )
-                )
-            else:
-                raise
+        # Retry logic: Try 2.0-flash, then retry 2.0-flash, then fallback to 1.5-flash
+        attempts = [
+            ("gemini-2.0-flash", 0),  # Attempt 1: Fast model
+            ("gemini-2.0-flash", 10), # Attempt 2: Re-try after 10s wait
+            ("gemini-1.5-flash", 0)   # Attempt 3: Fallback model
+        ]
+
+        import time
+        response = None
+        last_error = None
+
+        for model, delay in attempts:
+            if delay > 0:
+                time.sleep(delay)
+            try:
+                response = _call_gemini(model)
+                break # Success!
+            except Exception as rate_err:
+                last_error = rate_err
+                # Only retry on rate limits or 503 unavailable
+                if "429" in str(rate_err) or "RESOURCE_EXHAUSTED" in str(rate_err) or "503" in str(rate_err) or "UNAVAILABLE" in str(rate_err):
+                    continue
+                else:
+                    raise # If it's a structural error, fail immediately
+
+        if not response:
+            raise last_error # Raise the final error if all 3 attempts failed
 
         result_text = response.text
         return json.loads(result_text)
