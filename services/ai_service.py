@@ -53,11 +53,20 @@ def analyze_document_text(text: str) -> dict:
         try:
             response = _call_gemini()
         except Exception as rate_err:
-            # Retry once after 20s if quota exceeded
             if "429" in str(rate_err) or "RESOURCE_EXHAUSTED" in str(rate_err):
                 import time
                 time.sleep(20)
                 response = _call_gemini()
+            elif "503" in str(rate_err) or "UNAVAILABLE" in str(rate_err):
+                # Fallback to gemini-1.5-flash which handles high load better
+                response = client.models.generate_content(
+                    model='gemini-1.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.0
+                    )
+                )
             else:
                 raise
 
