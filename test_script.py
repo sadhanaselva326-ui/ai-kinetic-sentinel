@@ -1,13 +1,14 @@
-from dotenv import load_dotenv
-load_dotenv()
 import os
-print("API KEY Loaded:", bool(os.getenv("GEMINI_API_KEY")))
 
-
-
-# Configure Celery eagerly before importing app
+# 1. Set environment variables BEFORE FastAPI/Celery imports
 os.environ["CELERY_ALWAYS_EAGER"] = "True"
 os.environ["API_SECRET_KEY"] = "super_secure_key_123"
+
+# 2. Load .env
+from dotenv import load_dotenv
+load_dotenv()
+
+print("API KEY Loaded:", bool(os.getenv("GEMINI_API_KEY")))
 
 import base64
 from fastapi.testclient import TestClient
@@ -16,12 +17,29 @@ from services import ai_service, processing, extraction
 
 client = TestClient(app)
 
-# Mock extraction
+# 3. Mock extraction
 def mock_extract_text(file_bytes, file_type):
     return "This is a dummy extracted text from the document."
 
 processing.extract_text = mock_extract_text
 
+# 4. Mock AI process
+def mock_ai_process(text):
+    return {
+        "summary": "Dummy summary",
+        "entities": {"names": ["Entity1"], "dates": [], "organizations": ["Entity2"], "amounts": []},
+        "sentiment": "Positive"
+    }
+
+# Mock the function inside document.py that depends on ai_service, or mock the ai_service directly
+# Wait, let's see how routes.document imports process_document
+# The route imports process_document. process_document imports analyze_document_text.
+# We need to mock analyze_document_text on services.processing or services.ai_service
+# In routes/document.py we call process_document(request.fileBase64, request.fileType)
+# We can mock processing.process_document directly, but let's mock ai_service.analyze_document_text
+ai_service.analyze_document_text = mock_ai_process
+# Wait, processing.py is already imported, so if we mock ai_service.analyze_document_text, we should do it at the processing module level
+processing.analyze_document_text = mock_ai_process
 
 
 def test_api():
