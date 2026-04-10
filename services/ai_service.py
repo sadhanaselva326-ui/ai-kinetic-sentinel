@@ -42,7 +42,7 @@ def analyze_document_text(text: str) -> dict:
 
         def _call_gemini():
             return client.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-2.0-flash',
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
